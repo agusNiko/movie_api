@@ -1,0 +1,30 @@
+URL: /
+Timestamp: Fri Mar 12 2021 20:55:32 GMT+0100 (Central European Standard Time)
+
+URL: /css/style.css
+Timestamp: Fri Mar 12 2021 20:55:32 GMT+0100 (Central European Standard Time)
+
+URL: /js/server.js
+Timestamp: Fri Mar 12 2021 20:55:32 GMT+0100 (Central European Standard Time)
+
+URL: /favicon.ico
+Timestamp: Fri Mar 12 2021 20:55:32 GMT+0100 (Central European Standard Time)
+
+URL: /documentation
+Timestamp: Fri Mar 12 2021 20:55:47 GMT+0100 (Central European Standard Time)
+
+URL: /documentation
+Timestamp: Fri Mar 12 2021 20:59:41 GMT+0100 (Central European Standard Time)
+
+URL: /
+Timestamp: Fri Mar 12 2021 21:01:05 GMT+0100 (Central European Standard Time)
+
+URL: /css/style.css
+Timestamp: Fri Mar 12 2021 21:01:05 GMT+0100 (Central European Standard Time)
+
+URL: /js/server.js
+Timestamp: Fri Mar 12 2021 21:01:05 GMT+0100 (Central European Standard Time)
+
+URL: /favicon.ico
+Timestamp: Fri Mar 12 2021 21:01:05 GMT+0100 (Central European Standard Time)
+

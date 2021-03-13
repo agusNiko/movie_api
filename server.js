@@ -5,9 +5,9 @@ const http = require('http'),
 http.createServer((request, response) => {
   let addr = request.url,
     q = url.parse(addr, true),
-    filePath = '';
+    filePath = ''
 
-  fs.appendFile('../log.txt', 'URL: ' + addr + '\nTimestamp: ' + new Date() + '\n\n', (err) => {
+  fs.appendFile('log.txt', 'URL: ' + addr + '\nTimestamp: ' + new Date() + '\n\n', (err) => {
     if (err) {
       console.log(err);
     } else {
@@ -16,9 +16,10 @@ http.createServer((request, response) => {
   });
 
   if (q.pathname.includes('documentation')) {
-    filePath = (__dirname + 'documentation.html');
+    console.log(__dirname);
+    filePath = (`${__dirname}/documentation.html`);
   } else {
-    filePath = '../index.html';
+    filePath = (`${__dirname}/index.html`);
   }
 
   fs.readFile(filePath, (err, data) => {

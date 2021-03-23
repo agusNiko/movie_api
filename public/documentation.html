@@ -38,63 +38,109 @@
             <td class="tg-0lax">Return a list of ALL movies to the user</td>
             <td class="tg-0lax">/movies</td>
             <td class="tg-0lax">GET</td>
-            <td class="tg-0lax">A JSON object holding
-                data about the student to
-                add, structured like:
+            <td class="tg-0lax">None
                 </td>
             <td class="tg-0lax">A JSON object holding data
-                about the student that was
-                added, including an ID:
+                about all movies.
                 </td>
           </tr>
           <tr>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
+            <td class="tg-0lax">Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user</td>
+            <td class="tg-0lax">/movies/[movieTitle]</td>
+            <td class="tg-0lax">GET</td>
+            <td class="tg-0lax">None</td>
+            <td class="tg-0lax">Return A JSON object by movie title. Holding data
+              about a single movie,
+              containing an ID, description, genre, director, image URL. Example:
+              <p class="json">
+                {
+                  title: 'The Shawshank Redemption',
+                  director: ' ',
+                  year: 1994,
+                  description: '',
+                  genre: ' ',
+                  img: ' '
+                }
+              </p>
+              </td>
+          </tr>
+          <tr>
+            <td class="tg-0lax">Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
+            <td class="tg-0lax">/movies/[genre]</td>
+            <td class="tg-0lax">GET</td>
+            <td class="tg-0lax">None</td>
+            <td class="tg-0lax">Return A JSON object. Holding data
+              about a single movie,
+              containing name and genre
+              <p class="json">
+                {
+                  title: 'The Shawshank Redemption',
+                  genre: ' ',
+                }</td>
+          </tr>
+          <tr>
+            <td class="tg-0lax">Return data about a director (bio, birth year, death year) by name</td>
+            <td class="tg-0lax">/movies/[director]</td>
+            <td class="tg-0lax">GET</td>
+            <td class="tg-0lax">None</td>
+            <td class="tg-0lax">
+              {
+                name: '',
+                bio: ' ',
+                birth year: 1994,
+                death year: '',
+              }
+            </td>
+          </tr>
+          <tr>
+            <td class="tg-0lax">Allow new users to register</td>
+            <td class="tg-0lax">/users</td>
+            <td class="tg-0lax">POST</td>
+            <td class="tg-0lax">A JSON object holding
+              data about the new user to
+              add, structured like:
+              {
+              name: " ",
+              Nickname: "",
+              ID: ,
+              }
+              </td>
+            <td class="tg-0lax">A JSON object holding
+              data about the new user that was added, structured like:
+              {
+              name: " ",
+              Nickname: "",
+              ID: 
+              }</td>
+          </tr>
+          <tr>
+            <td class="tg-0lax">Allow users to update their user info (username)</td>
+            <td class="tg-0lax">/users</td>
+            <td class="tg-0lax">PUT</td>
+            <td class="tg-0lax">None</td>
             <td class="tg-0lax"></td>
           </tr>
           <tr>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
+            <td class="tg-0lax">Allow users to add a movie to their list of favorites </td>
+            <td class="tg-0lax">/users[ID]/favorites</td>
+            <td class="tg-0lax">PUT</td>
+            <td class="tg-0lax">None</td>
+            <td class="tg-0lax">A text  message indicating that a movie has been added)</td>
           </tr>
           <tr>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
+            <td class="tg-0lax">Allow users to remove a movie from their list of favorites</td>
+            <td class="tg-0lax">/users[ID]/favorites/[moviesID]</td>
+            <td class="tg-0lax">DELETE</td>
+            <td class="tg-0lax">None</td>
+            <td class="tg-0lax">a text message indicating that a movie has been removed</td>
           </tr>
           <tr>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-          </tr>
-          <tr>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-          </tr>
-          <tr>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-          </tr>
-          <tr>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
-            <td class="tg-0lax"></td>
+            <td class="tg-0lax">Allow existing users to deregister</td>
+            <td class="tg-0lax">/users/users[ID]</td>
+            <td class="tg-0lax">DELETE</td>
+            <td class="tg-0lax">None</td>
+            <td class="tg-0lax"> a text message indicating that a user email has been removed
+              </td>
           </tr>
         </tbody>
         </table>

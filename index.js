@@ -189,9 +189,11 @@ app.get('/movies/:title/genre' , (req,res) => {
 
 //Gets the data about a director
 
-app.get('/:directors' , (req,res) => {
-  let thisMovie = topMovies.find((movie) => { return movie.directors === req.params.directors})
-  let thisDirector = {'name' : thisMovie.director.name}
+app.get('/director/:name' , (req,res) => {
+  let thisMovie = topMovies.find((movie) => { return movie.director.name === req.params.name})
+  console.log(thisMovie);
+
+  let thisDirector = {'name' : thisMovie.director}
   console.log(thisMovie)
     res.json(thisDirector);
 }); //-----------------------------------Doesn't work

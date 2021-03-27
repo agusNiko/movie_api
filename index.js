@@ -164,7 +164,7 @@ app.use(morgan('common'));
 
 
 app.get('/', (req, res) => {
-  res.json('Welcome to myFlix!');
+  res.send('Welcome to myFlix!');
 });
 
 // Gets the list of data about ALL movies
@@ -174,8 +174,8 @@ app.get('/movies', (req, res) => {
 
 //Gets the data about a single movie, by title
 
-app.get('/movies/:title' , (req,res) => {
-  res.json(topMovies.find((movie) => { return movie.title === req.params.title }));
+app.get('/movies/:requestedMovie' , (req,res) => {
+  res.json(topMovies.find((movie) => { return movie.title === req.params.requestedMovie }));
 });
 
 //Gets the data about a single movie, by genre
@@ -189,14 +189,11 @@ app.get('/movies/:title/genre' , (req,res) => {
 
 //Gets the data about a director
 
-app.get('/director/:name' , (req,res) => {
-  let thisMovie = topMovies.find((movie) => { return movie.director.name === req.params.name})
+app.get('/director/:directorsName' , (req,res) => {
+  let thisMovie = topMovies.find((movie) => { return movie.director.name === req.params.directorsName})
   console.log(thisMovie);
-
-  let thisDirector = {'name' : thisMovie.director}
-  console.log(thisMovie)
-    res.json(thisDirector);
-}); //-----------------------------------Doesn't work
+  res.json(thisMovie.director);
+});
 
 // Gets the users list
 
@@ -218,7 +215,6 @@ app.post('/movies', (req, res) => {
   }
 });
 
-
 //register new user
 app.post('/users', (req, res) => {
   let newUser = req.body;
@@ -228,7 +224,7 @@ if (!newUser.name){
 } else {
   newUser.id = uuid.v4();
   users.push(newUser)
-  res.status(201).send(newUser);
+  res.status(201).json(newUser);
 }
 });
 
@@ -239,7 +235,7 @@ app.put('/users/:username/:newUsername', (req, res) => {
 
   if (user) {
     user.name = (req.params.newUsername);
-    res.status(201).json(users).send('Username '+ req.params.username + 'was change to ' + req.params.newUsername);
+    res.status(201).send('Username '+ req.params.username + 'was change to ' + req.params.newUsername);
   } else {
     res.status(404).send('Student with the name ' + req.params.username + ' was not found.');
   }
@@ -251,11 +247,13 @@ app.put('/users/movies/:username/:addMovie', (req, res) =>{
   let user = users.find((user) => { return user.name === req.params.username });
   let newMovie = topMovies.find((movie) => { return movie.title === req.params.addMovie} );
 
-  if (user){
+  if(!user){
+    res.status(404).send(req.params.username + ' was not found.')
+  } else if(!newMovie) {
+    res.status(404).send(req.params.addMovie + ' was not found.')
+  } else {
       user.movies.push(newMovie)
-      res.status(201).json(user).send( req.params.addMovie.title + ' was add to favorites.');
-  }else {
-    res.status(404).send(req.params.username + ' or' + req.params.addMovie + ' was not found.');
+      res.status(201).send(req.params.addMovie + ' was add to favorites.');
   }
 });
 

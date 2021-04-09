@@ -54,19 +54,29 @@
               containing an ID, description, genre, director, image URL. Example:
               <p class="json">
                 {
-                  title: 'The Shawshank Redemption',
-                  director: ' ',
-                  year: 1994,
-                  description: '',
-                  genre: ' ',
-                  img: ' '
-                }
+                  "Genre": {
+                      "Name": "Drama",
+                      "Description": "Drama is a mode of fictional representation..."
+                  },
+                  "Director": {
+                      "Name": "Robert Zemeckis",
+                      "Bio": "is an American film director, film producer....",
+                      "Birth": "1952",
+                      "Death": ""
+                  },
+                  "Actors": [],
+                  "_id": "60638444d623c718144797d9",
+                  "Title": "Forrest Gump",
+                  "Description": "The presidencies of Kennedy and Johnson...",
+                  "ImagePath": "https://m.media-amazon.com/images.jpg",
+                  "Featured": true
+              },
               </p>
               </td>
           </tr>
           <tr>
             <td class="tg-0lax">Return data about a genre (description) by name/title (e.g., “Thriller”)</td>
-            <td class="tg-0lax">/movies/[genre]</td>
+            <td class="tg-0lax">/movies/[Title of the movie]/movie</td>
             <td class="tg-0lax">GET</td>
             <td class="tg-0lax">None</td>
             <td class="tg-0lax">Return A JSON object. Holding data
@@ -74,9 +84,11 @@
               containing name and genre
               <p class="json">
                 {
-                  title: 'The Shawshank Redemption',
-                  genre: ' ',
-                }</td>
+                  "Title": "The Godfather",
+                  "genre": "Drama"
+                }
+              </p>
+            </td>
           </tr>
           <tr>
             <td class="tg-0lax">Return data about a director (bio, birth year, death year) by name</td>
@@ -84,12 +96,14 @@
             <td class="tg-0lax">GET</td>
             <td class="tg-0lax">None</td>
             <td class="tg-0lax">
-              {
-                name: '',
-                bio: ' ',
-                birth year: 1994,
-                death year: '',
+              <p class="json">
+              "Name": {
+                "Name": "David Fincher",
+                "Bio": "is an American film director...",
+                "Birth": "1962",
+                "Death": ""
               }
+              </p>  
             </td>
           </tr>
           <tr>
@@ -99,47 +113,66 @@
             <td class="tg-0lax">A JSON object holding
               data about the new user to
               add, structured like:
-              {
-              name: " ",
-              Nickname: "",
-              ID: ,
-              }
+              <p class="json">
+                {
+                  ID: Integer,
+                  Username: String,
+                  Password: String,
+                  Email: String,
+                  Birthday: Date
+                }
+              </p>
               </td>
-            <td class="tg-0lax">A JSON object holding
-              data about the new user that was added, structured like:
-              {
-              name: " ",
-              Nickname: "",
-              ID: 
-              }</td>
+              <td class="tg-0lax">A JSON object holding data about the new user that was added, structured  JSON in this format like:
+                <p class="json">
+                  {
+                    ID: Integer,
+                    Username: String,
+                    Password: String,
+                    Email: String,
+                    Birthday: Date
+                  }
+                </p> 
+             </td>
           </tr>
           <tr>
             <td class="tg-0lax">Allow users to update their user info (username)</td>
             <td class="tg-0lax">/users</td>
             <td class="tg-0lax">PUT</td>
-            <td class="tg-0lax">None</td>
-            <td class="tg-0lax"></td>
+            <td class="tg-0lax">A JSON object holding data about the new user that was modified, structured  JSON in this format like:
+              <p class="json">
+                {
+                  Username: req.body.Username,
+                  Password: req.body.Password,
+                  Email: req.body.Email,
+                  Birthday: req.body.Birthday
+                }
+              </p>
+            </td>
+            <td class="tg-0lax"> 
+              A JSON object holding the updated data 
+            </td>
           </tr>
           <tr>
             <td class="tg-0lax">Allow users to add a movie to their list of favorites </td>
-            <td class="tg-0lax">/users[ID]/favorites</td>
-            <td class="tg-0lax">PUT</td>
+            <td class="tg-0lax">/users/movies/[Username]/[MovieID]</td>
+            <td class="tg-0lax">Post</td>
             <td class="tg-0lax">None</td>
-            <td class="tg-0lax">A text  message indicating that a movie has been added)</td>
+            <td class="tg-0lax">A JSON object holding the updated data </td>
           </tr>
           <tr>
             <td class="tg-0lax">Allow users to remove a movie from their list of favorites</td>
-            <td class="tg-0lax">/users[ID]/favorites/[moviesID]</td>
+            <td class="tg-0lax">/users/movies/[Username]/[MovieID]/remove</td>
             <td class="tg-0lax">DELETE</td>
             <td class="tg-0lax">None</td>
-            <td class="tg-0lax">a text message indicating that a movie has been removed</td>
+            <td class="tg-0lax">A JSON object holding the updated data </td>
           </tr>
           <tr>
             <td class="tg-0lax">Allow existing users to deregister</td>
-            <td class="tg-0lax">/users/users[ID]</td>
+            <td class="tg-0lax">/users/[name]</td>
             <td class="tg-0lax">DELETE</td>
             <td class="tg-0lax">None</td>
-            <td class="tg-0lax"> a text message indicating that a user email has been removed
+            <td class="tg-0lax"> a text message indicating that a user has been removed
               </td>
           </tr>
         </tbody>

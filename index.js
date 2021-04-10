@@ -74,19 +74,21 @@ app.get('/movies/:requestedGenre/genre', passport.authenticate('jwt', { session:
 });
 
 //Gets the description of a Movie genre
+//                                          this endpoint is unnecessary
 
-app.get('/movies/:requestedMovie/movie', passport.authenticate('jwt', { session: false }), (req,res) => {
-  Movies.findOne({Title: req.params.requestedMovie})
-  .then((thisMovie) => {
-    let thisMovieGenre = {Title: thisMovie.Title, genre: thisMovie.Genre.Name}
-    res.json(thisMovieGenre);
-})
-  .catch(
-    (err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
+
+// app.get('/movies/:requestedMovie/movie', passport.authenticate('jwt', { session: false }), (req,res) => {
+//   Movies.findOne({Title: req.params.requestedMovie})
+//   .then((thisMovie) => {
+//     let thisMovieGenre = {Title: thisMovie.Title, genre: thisMovie.Genre.Name}
+//     res.json(thisMovieGenre);
+// })
+//   .catch(
+//     (err) => {
+//       console.error(err);
+//       res.status(500).send('Error: ' + err);
+//     });
+// });
 
 //Gets the data about a director
 

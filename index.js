@@ -2,7 +2,6 @@ const { response } = require('express');
 const express = require('express');
 const morgan = require('morgan');
 
-
 const uuid = require('uuid');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
@@ -13,9 +12,13 @@ const Users = Models.User;
 const passport = require('passport');
 require('./passport.js');
 
+const {check, validationResult} = require('express-validator')
+
 const bodyParser = require('body-parser');  // body Parser is deprecated 
 
 const app = express();
+
+const port = process.env.PORT || 8080;
 
 app.use(bodyParser.json()); //body Parser is deprecated substituted by: 
 //app.use(express.json());
@@ -26,6 +29,21 @@ let auth = require('./auth')(app);
 app.use(morgan('common'));
 
 mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+
+const cors = require('cors');
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){ // If a specific origin isn’t found on the list of allowed origins
+      let message = 'The CORS policy for this application doesn’t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 // GET requests
 
@@ -139,7 +157,21 @@ app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (r
   Email: String,
   Birthday: Date
 }*/
-app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.post('/users', [
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be valid').isEmail()
+], (req, res) => {
+
+  // check the validation object for errors
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array()});
+  }
+
+  let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
@@ -148,7 +180,7 @@ app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) 
         Users
           .create({
             Username: req.body.Username,
-            Password: req.body.Password,
+            Password: hashedPassword,
             Email: req.body.Email,
             Birthday: req.body.Birthday
           })
@@ -156,7 +188,7 @@ app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) 
         .catch((error) => {
           console.error(error);
           res.status(500).send('Error: ' + error);
-        })
+        });
       }
     })
     .catch((error) => {
@@ -178,13 +210,24 @@ app.post('/users', passport.authenticate('jwt', { session: false }), (req, res) 
   Birthday: Date
 }*/
 
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
+  check('Username', 'Username is required').isLength({min: 5}), 
+  check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric()], 
+  (req, res) => {
+
+  // check the validation object for errors
+  let errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array()});
+  }
+
   Users.findOneAndUpdate({ Username: req.params.Username }, { $set:
     {
       Username: req.body.Username,
-      Password: req.body.Password,
-      Email: req.body.Email,
-      Birthday: req.body.Birthday
+      // Password: req.body.Password,
+      // Email: req.body.Email,
+      // Birthday: req.body.Birthday
     }
   },
   { new: true }, // This line makes sure that the updated document is returned
@@ -259,6 +302,6 @@ app.use((err, req, res, next) => {
 });
 
 // listen for requests
-app.listen(8080, () => {
-  console.log('Your app is listening on port 8080.');
+app.listen(port, '0.0.0.0', () => {
+  console.log('Your app is listening on port ' + port);
 });

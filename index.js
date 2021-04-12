@@ -94,8 +94,6 @@ app.get('/movies/:requestedGenre/genre', passport.authenticate('jwt', { session:
 
 //Gets the description of a Movie genre
 //                                          this endpoint is unnecessary
-
-
 // app.get('/movies/:requestedMovie/movie', passport.authenticate('jwt', { session: false }), (req,res) => {
 //   Movies.findOne({Title: req.params.requestedMovie})
 //   .then((thisMovie) => {

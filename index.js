@@ -28,8 +28,8 @@ let auth = require('./auth')(app);
 
 app.use(morgan('common'));
 
-//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true, });
 
 const cors = require('cors');
 
@@ -91,21 +91,6 @@ app.get('/movies/:requestedGenre/genre', passport.authenticate('jwt', { session:
       res.status(500).send('Error: ' + err);
     });
 });
-
-//Gets the description of a Movie genre
-//                                          this endpoint is unnecessary
-// app.get('/movies/:requestedMovie/movie', passport.authenticate('jwt', { session: false }), (req,res) => {
-//   Movies.findOne({Title: req.params.requestedMovie})
-//   .then((thisMovie) => {
-//     let thisMovieGenre = {Title: thisMovie.Title, genre: thisMovie.Genre.Name}
-//     res.json(thisMovieGenre);
-// })
-//   .catch(
-//     (err) => {
-//       console.error(err);
-//       res.status(500).send('Error: ' + err);
-//     });
-// });
 
 //Gets the data about a director
 
@@ -242,11 +227,23 @@ app.put('/users/:Username', passport.authenticate('jwt', { session: false }), [
 });
 
 //add a movie to a list of favorites by MovieID 
+// app.get('/users/movies/:Username/:MovieID/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+//   Movies.find
+// })
+
+
+
 
 app.post('/users/movies/:Username/:MovieID', passport.authenticate('jwt', { session: false }), (req, res) => {
+Movies.findById(req.params.MovieID) // first I use findOne to see if the MovieID exist
+  .then((movie) => {  if (!movie){
+   
+    res.status(404).send('movie not found')
+  } else{
+    console.log(movie)
   Users.findOneAndUpdate({ Username: req.params.Username }, {
-                                     //I HAVE TO FIX IT =====> i have to search in the movies database for this ID an then push it to the favorite movies//////////
-     $push: { FavoriteMovies: req.params.MovieID }
+                                   //I HAVE TO FIX IT =====> i have to search in the movies database for this ID an then push it to the favorite movies//////////
+     $addToSet: { FavoriteMovies: req.params.MovieID }
    },
    { new: true }, // This line makes sure that the updated document is returned
   (err, updatedUser) => {
@@ -257,7 +254,47 @@ app.post('/users/movies/:Username/:MovieID', passport.authenticate('jwt', { sess
       res.json(updatedUser);
     }
   });
+} })    
+.catch((err) => {
+  console.error(err);
+  res.status(500).send('Error: ' + err);
 });
+});
+
+// --------------------
+
+// -------------------
+
+
+// app.post(
+//   "/users/movies/:Username/:MovieID",
+//   passport.authenticate("jwt", { session: false }),
+//   (req, res) => {
+//   Movies.findById(req.body.MovieID) // first I use findOne to see if the MovieID exist
+//        .then((movie) => {
+//        if(movie){ Users.findOneAndUpdate(
+//           { Username: req.params.Username },
+//           {
+//             $addToSet: { FavoriteMovies: req.params.MovieID },
+//           },
+//           { new: true }, // This line makes sure that the updated document is returned
+//           (err, updatedUser) => {
+//             if (err) {
+//               console.error(err);
+//               res.status(500).send("Error: " + err);
+//             } else {
+//               res.json(updatedUser);
+//             }
+//           }
+//         )} else{
+//           res.status(404).send("MovieID not found");
+//         }
+//       }, (error) => {
+//         console.log(error)
+//         res.status(500).send(error)
+//        })  
+//       }
+// );
 
 //Remove a movie to a list of favorites by MovieID 
 

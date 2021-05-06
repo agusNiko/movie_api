@@ -23,8 +23,6 @@ const port = process.env.PORT || 8080;
 app.use(bodyParser.json()); //body Parser is deprecated substituted by:
 //app.use(express.json());
 
-let auth = require("./auth")(app);
-
 app.use(morgan("common"));
 
 // mongoose.connect("mongodb://localhost:27017/myFlixDB", {
@@ -62,7 +60,7 @@ app.use(
     },
   })
 );
-
+let auth = require("./auth")(app);
 // GET requests
 
 app.get("/", (req, res) => {

@@ -44,6 +44,7 @@ let allowedOrigins = [
   "http://testsite.com",
   "http://localhost:1234",
   "https://agusniko.github.io",
+  "https://myflapix.herokuapp.com",
 ];
 
 app.use(

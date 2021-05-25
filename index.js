@@ -43,6 +43,7 @@ let allowedOrigins = [
   "http://localhost:1234",
   "https://agusniko.github.io",
   "https://myflapix.herokuapp.com/login",
+  "https://agusniko.github.io/myFlix-client/",
 ];
 
 app.use(

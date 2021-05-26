@@ -44,6 +44,7 @@ let allowedOrigins = [
   "https://agusniko.github.io",
   "https://myflapix.herokuapp.com/login",
   "https://agusniko.github.io/myFlix-client/",
+  "https://confident-babbage-994a9f.netlify.app/",
 ];
 
 app.use(

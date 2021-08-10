@@ -30,6 +30,7 @@ app.use(morgan("common"));
 //   useUnifiedTopology: true,
 //   useFindAndModify: false,
 // });
+
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -279,6 +280,50 @@ app.put(
     );
   }
 );
+
+//------ add reviews
+
+app.post(
+  "/movies/:MovieID/reviews",
+  passport.authenticate("jwt", { session: false }),
+  [
+    check("MovieID", "MovieID is required").not().isEmpty(),
+    check("Comment", "Comment is required").not().isEmpty(),
+    check("Rating", "Rating is required").isNumeric(),
+  ],
+  (req, res) => {
+    // check the validation object for errors
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    Movies.findOneAndUpdate(
+      { _id: req.params.MovieID },
+      {
+        $push: {
+          Reviews: {
+            Comment: req.body.Comment,
+            User: req.user,
+            Rating: req.body.Rating,
+          },
+        },
+      },
+      { new: true }, // This line makes sure that the updated document is returned
+      (err, updatedMovieReview) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send("Error: " + err);
+        } else {
+          res.json(updatedMovieReview);
+        }
+      }
+    );
+  }
+);
+
+///---
 
 app.post(
   "/users/movies/:Username/:MovieID",

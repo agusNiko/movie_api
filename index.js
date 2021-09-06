@@ -104,6 +104,23 @@ app.get(
   }
 );
 
+//Gets the data about a single movie, by id
+
+app.get(
+  "/movie/id/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Movies.findOne({ _id: req.params.id })
+      .then((thisMovie) => {
+        res.json(thisMovie);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      });
+  }
+);
+
 //Gets the description of a genre by Genres Name
 
 app.get(

@@ -45,7 +45,10 @@ let allowedOrigins = [
   "https://agusniko.github.io",
   "https://confident-babbage-994a9f.netlify.app",
   "https://myflapix.herokuapp.com",
-  "http://localhost:4200/",
+  "http://localhost:4200",
+  "http://anotherhost",
+  "madhouse",
+  "https://festive-clarke-ff1c85.netlify.app",
 ];
 
 app.use(

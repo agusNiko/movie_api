@@ -70,11 +70,25 @@ app.use(
 let auth = require("./auth")(app);
 // GET requests
 
+/**
+ * Returns the sum of a and b
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
+function sum(a, b) {
+  return a + b;
+}
+
 app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });
 
-// Gets the list of data about ALL movies
+/**
+ *@function get All Movies
+ *@description get All movies from the database
+ *@returns {JSON} JSON object of all movies, each of which contain the movie's title, description, director, genre, image url, and featured status.
+ */
 app.get(
   "/movies",
   passport.authenticate("jwt", { session: false }),
@@ -90,8 +104,11 @@ app.get(
   }
 );
 
-//Gets the data about a single movie, by title
-
+/**
+ * @function getMovieByTitle
+ * @description Gets the data about a single movie, by title
+ * @returns {JSON} JSON object the movie that contains title, description, director, genre, image url, reviews and featured status.
+ */
 app.get(
   "/movies/:requestedMovie",
   passport.authenticate("jwt", { session: false }),
@@ -107,7 +124,11 @@ app.get(
   }
 );
 
-//Gets the data about a single movie, by id
+/**
+ * @function getMovieById
+ * @description Gets the data about a single movie, by id
+ * @returns {JSON} JSON object the movie that contains title, description, director, genre, image url, reviews and featured status.
+ */
 
 app.get(
   "/movie/id/:id",
@@ -124,8 +145,11 @@ app.get(
   }
 );
 
-//Gets the description of a genre by Genres Name
-
+/**
+ * @function getGenre
+ * @description Gets the description of a genre by Genres Name
+ * @returns {JSON} JSON object the genre and description.
+ */
 app.get(
   "/movies/:requestedGenre/genre",
   passport.authenticate("jwt", { session: false }),
@@ -142,8 +166,11 @@ app.get(
   }
 );
 
-//Gets the data about a director
-
+/**
+ * @getDirector
+ * @description Gets the data about a director
+ * @returns {JSON} JSON object with the name and bio data of the director
+ */
 app.get(
   "/director/:directorsName",
   passport.authenticate("jwt", { session: false }),
@@ -157,8 +184,12 @@ app.get(
   }
 );
 
-// Gets the users list
-
+/**
+ * @function getUsers
+ * @description Gets the users list
+ * @returns {JSON} JSON object of all users, each of which contain username, email, id, favorite movies, and birthday.
+ *
+ */
 app.get(
   "/users",
   passport.authenticate("jwt", { session: false }),
@@ -174,8 +205,11 @@ app.get(
   }
 );
 
-// Gets users by name
-
+/**
+ * @function GetsUserByName
+ * @description get user by username
+ * @returns {JSON} JSON object of all users, each of which contain username, email, id, favorite movies, and birthday.
+ */
 app.get(
   "/users/:Username",
   passport.authenticate("jwt", { session: false }),
@@ -191,16 +225,21 @@ app.get(
   }
 );
 
-// ------------ Register/Add a user :
+/**
+ * @function registerUser
+ * @description Register/Add a user
+ * @augments userData
+ * @returns {JSON} JSON object of all users, each of which contain username, email, id, favorite movies, and birthday.
+ */
 
-/* We’ll expect JSON in this format
-{
-  ID: Integer,
-  Username: String,
-  Password: String,
-  Email: String,
-  Birthday: Date
-}*/
+/*expect JSON in this format 
+  {
+    ID: Integer,
+    Username: String, 
+    Password: String,
+    Email: String, 
+    Birthday: Date}
+ */
 app.post(
   "/users",
   [
@@ -248,7 +287,12 @@ app.post(
   }
 );
 
-// Update the "user name" of a user
+/**
+ * * @function updateUserData
+ * @description Update the username
+ * @returns {JSON} JSON object of all users, each of which contain username, email, id, favorite movies, and birthday.
+ * */
+
 /* We’ll expect JSON in this format
 {
   Username: String,
@@ -301,7 +345,12 @@ app.put(
   }
 );
 
-//------ add reviews
+/**
+ *
+ * @function sendReview
+ * @description Allows to add reviews and ratings to the movies
+ * @returns {JSON} JSON object with review, reviewId, userId and rating
+ */
 
 app.post(
   "/movies/:MovieID/reviews",
@@ -343,7 +392,10 @@ app.post(
   }
 );
 
-///---
+/**
+ * @function addToFavorites
+ * @description Adds movie to favorites
+ */
 
 app.post(
   "/users/movies/:Username/:MovieID",
@@ -378,7 +430,10 @@ app.post(
   }
 );
 
-//Remove a movie to a list of favorites by MovieID
+/**
+ * @function removeFromFavorites
+ * @description Remove a movie from a list of favorites by MovieID
+ */
 
 app.post(
   "/users/movies/:Username/:MovieID/remove",
@@ -402,7 +457,11 @@ app.post(
   }
 );
 
-//remove a user
+/**
+ * @function unsubscribe
+ * @description Removes User to unsubscribe
+ * @returns message "user was deleted" or "user was not found"
+ */
 
 app.delete(
   "/users/:name",

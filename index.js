@@ -68,18 +68,8 @@ app.use(
 );
 
 let auth = require("./auth")(app);
+
 // GET requests
-
-/**
- * Returns the sum of a and b
- * @param {number} a
- * @param {number} b
- * @returns {number}
- */
-function sum(a, b) {
-  return a + b;
-}
-
 app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });

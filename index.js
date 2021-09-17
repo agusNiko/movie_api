@@ -16,6 +16,9 @@ const { check, validationResult } = require("express-validator");
 
 const bodyParser = require("body-parser"); // body Parser is deprecated
 
+const swaggerJSDoc = require("swagger-jsdoc"); // swagger exportation to add API documentation
+const swaggerUi = require("swagger-ui-express");
+
 const app = express();
 
 const port = process.env.PORT || 8080;
@@ -35,6 +38,38 @@ mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
+const swaggerDefinition = {
+  openapi: "3.0.0",
+  info: {
+    title: "Express API for JSONPlaceholder",
+    version: "1.0.0",
+    description:
+      "This is a REST API application made with Express. It retrieves data from JSONPlaceholder.",
+    license: {
+      name: "Licensed Under MIT",
+      url: "https://spdx.org/licenses/MIT.html",
+    },
+    contact: {
+      name: "JSONPlaceholder",
+      url: "https://jsonplaceholder.typicode.com",
+    },
+  },
+  servers: [
+    {
+      url: "http://localhost:8080",
+      description: "Development server",
+    },
+  ],
+};
+const options = {
+  swaggerDefinition,
+  // Paths to files containing OpenAPI definitions
+  apis: ["index.js"],
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+app.use("/api-documentation", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const cors = require("cors");
 
@@ -69,7 +104,13 @@ app.use(
 
 let auth = require("./auth")(app);
 
-// GET requests
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: welcome page
+ *     description: send you to the landing page
+ */
 app.get("/", (req, res) => {
   res.send("Welcome to myFlix!");
 });
